@@ -15,7 +15,18 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->string('total_price');
             $table->timestamps();
+        });
+
+        Schema::create('order_product', function (Blueprint $table) {
+
+            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('product_id');
+            $table->integer('count');
+
+
         });
     }
 
@@ -27,5 +38,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('orders');
+        Schema::dropIfExists('order_product');
     }
 };
