@@ -2,12 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductCollection;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Services\Product\CreateProduct;
+use App\Services\Product\UpdateProduct;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +26,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products=Product::orderBy('id','desc')->paginate(3);
+
+        return new ProductCollection($products);
     }
 
     /**
@@ -34,9 +47,12 @@ class ProductController extends Controller
      * @param  \App\Http\Requests\StoreProductRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProductRequest $request)
+    public function store(StoreProductRequest $request,CreateProduct $createProduct)
     {
-        //
+        $createProduct->execute($request);
+
+        return response()->json(['message'=>'your product inserted successfuly','status'=>true],Response::HTTP_CREATED);
+
     }
 
     /**
@@ -45,9 +61,10 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $product=Product::find($id);
+        return new ProductResource($product);
     }
 
     /**
@@ -68,9 +85,12 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $updateProductRequest, UpdateProduct $updateProduct)
     {
-        //
+        $updateProduct->execute($updateProductRequest);
+        return response()->json(['message'=>'your product updated successfuly','status'=>true],Response::HTTP_ACCEPTED);
+
+
     }
 
     /**
@@ -79,8 +99,11 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $product=Product::find($id);
+        $product->delete();
+        return response()->json(['message'=>'your product deleted successfuly','status'=>true],Response::HTTP_OK);
+
     }
 }

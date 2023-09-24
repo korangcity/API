@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProductFactory extends Factory
 {
+
+    protected $model = Product::class;
     /**
      * Define the model's default state.
      *
@@ -17,7 +20,9 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-
+            'name'=>$this->faker->text(20),
+            'price'=>$this->faker->numberBetween(300000,10000000),
+            'count'=>$this->faker->numberBetween(3,10)
         ];
     }
 }
