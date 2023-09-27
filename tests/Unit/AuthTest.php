@@ -12,14 +12,14 @@ class AuthTest extends MyTestCase
      *
      * @return void
      */
-//    public function testUserRegister()
-//    {
-//        $response =$this->post('api/register',
-//            ['name' => 'Mahdi', 'email' => 'm.fH@gmail.com', 'password' => '12345678', 'password_confirmation' => '12345678']
-//        );
-//        $response->assertCreated();
-//
-//    }
+    public function testUserRegister()
+    {
+        $response =$this->post('api/register',
+            ['name' => 'Mahdi', 'email' => 'm.fH@gmail.com', 'password' => '12345678', 'password_confirmation' => '12345678']
+        );
+        $response->assertCreated();
+
+    }
 //
     public function testUserLogin()
     {
