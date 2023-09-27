@@ -17,4 +17,9 @@ class Product extends Model
         'price',
         'inventory'
     ];
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class);
+    }
 }

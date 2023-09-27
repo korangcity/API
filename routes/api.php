@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,11 +30,17 @@ Route::group([
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh');
-    Route::post('/me', [AuthController::class, 'me'])->name('me');
+
     Route::get('/products',[ProductController::class,'index']);
     Route::post('/product/create',[ProductController::class,'store']);
     Route::get('/product/{id}',[ProductController::class,'show']);
-    Route::post('/product/{id}',[ProductController::class,'update']);
+    Route::put('/product/{id}',[ProductController::class,'update']);
     Route::delete('/product/{id}',[ProductController::class,'destroy']);
-    
+
+    Route::post('order/create',[OrderController::class,'store']);
+    Route::get('orders',[OrderController::class,'index']);
+    Route::get('order/{id}',[OrderController::class,'show']);
+    Route::put('order',[OrderController::class,'update']);
+    Route::delete('order/{id}',[OrderController::class,'destroy']);
+
 });
