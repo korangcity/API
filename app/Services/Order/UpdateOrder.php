@@ -9,7 +9,7 @@ class UpdateOrder extends AbstractUpdateOrder
     public function execute()
     {
         $total_price = $this->getTotalPrice($this->count, $this->product);
-        $ids=$this->product->pluck('_id')->toArray();
+        $ids = $this->product->pluck('_id')->toArray();
         $input = [
             'products_count' => $this->count,
             'total_price' => $total_price,
@@ -22,7 +22,7 @@ class UpdateOrder extends AbstractUpdateOrder
     }
 
 
-    private function getTotalPrice($counts,$products)
+    private function getTotalPrice($counts, $products)
     {
         foreach ($products as $key => $product) {
             $total_prices[] = $counts[$key] * $product->price;
