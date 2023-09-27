@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Product;
 use App\Services\Order\CreateOrder;
 use App\Services\Order\EditOrder;
+use App\Services\Order\UpdateProductInventoryByOrderDestroyed;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Resources\OrderCollection;
 
@@ -21,7 +22,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders=Order::orderBy('id','desc')->paginate(3);
+        $orders = Order::orderBy('id', 'desc')->paginate(3);
         return new OrderCollection($orders);
     }
 
@@ -68,7 +69,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order=Order::find($id);
+        $order = Order::find($id);
         return new OrderResource($order);
     }
 
@@ -93,7 +94,7 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $request, EditOrder $editOrder)
     {
 
-        $editOrderCheck=$editOrder->execute($request);
+        $editOrderCheck = $editOrder->execute($request);
 //        return response()->json(['message' => $editOrderCheck]);
         $messsage = "order is updated";
         $http_response = Response::HTTP_CREATED;
@@ -115,14 +116,11 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        $order=Order::find($id);
-        $counts=$order->products_count;
-
-        foreach ($order->products as $key=>$product) {
-            $product->inventory+=$counts[$key];
-            $product->save();
-        }
+        $order = Order::find($id);
+        $updateProductInventory = new UpdateProductInventoryByOrderDestroyed($order->products,$order->products_count);
+        $updateProductInventory->execute();
         $order->delete();
-        return response()->json(['message'=>'your order deleted successfuly','status'=>true],Response::HTTP_OK);
+
+        return response()->json(['message' => 'your order deleted successfuly', 'status' => true], Response::HTTP_OK);
     }
 }
