@@ -42,7 +42,7 @@ class AuthController extends Controller
         $user->password = bcrypt(request()->password);
         $user->save();
 
-        return response()->json($user, 201);
+        return response()->json(['message'=>'you are registed successfully'], 201);
     }
 
 
@@ -62,15 +62,6 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function me()
-    {
-        return response()->json(auth()->user());
-    }
 
     /**
      * Log the user out (Invalidate the token).

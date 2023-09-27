@@ -18,3 +18,4 @@ function sanitize($data = ""): array|string
 
     return $data;
 }
+

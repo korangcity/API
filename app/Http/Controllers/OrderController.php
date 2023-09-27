@@ -47,7 +47,7 @@ class OrderController extends Controller
         $createCheck = $createOrder->execute($request);
         $getResponseMessage=$this->getResponseMessage($createCheck,'registered');
 
-        return response()->json(['message' => $getResponseMessage['messsage'], 'status' => $getResponseMessage['status']], $getResponseMessage['http_response']);
+        return response()->json(['message' => $getResponseMessage['message'], 'status' => $getResponseMessage['status']], $getResponseMessage['http_response']);
 
     }
 
@@ -87,7 +87,7 @@ class OrderController extends Controller
         $editOrderCheck = $editOrder->execute($request);
         $getResponseMessage=$this->getResponseMessage($editOrderCheck,'updated');
 
-        return response()->json(['message' => $getResponseMessage['messsage'], 'status' => $getResponseMessage['status']], $getResponseMessage['http_response']);
+        return response()->json(['message' => $getResponseMessage['message'], 'status' => $getResponseMessage['status']], $getResponseMessage['http_response']);
     }
 
     /**

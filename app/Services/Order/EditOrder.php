@@ -14,7 +14,6 @@ class EditOrder
 
         $inputData = $this->sanitizeInputData($request);
         $products = Product::whereIn('_id', $inputData['product_id'])->get();
-        $user = User::find($inputData['user_id']);
         $order = Order::find($inputData['order_id']);
 
         $oldProducts=$order->products()->pluck('_id');

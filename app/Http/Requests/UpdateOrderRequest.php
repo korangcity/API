@@ -25,7 +25,6 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             'order_id'=>['required'],
-            'user_id'=>['required'],
             'product_id'=>['required'],
             'count'=>['required']
         ];
