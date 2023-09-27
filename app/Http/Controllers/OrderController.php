@@ -44,20 +44,10 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request, CreateOrder $createOrder)
     {
-
-
         $createCheck = $createOrder->execute($request);
+        $getResponseMessage=$this->getResponseMessage($createCheck,'registered');
 
-        $messsage = "order is registered";
-        $http_response = Response::HTTP_CREATED;
-        $status = true;
-        if (!$createCheck) {
-            $messsage = "your order count is out of product inventory range";
-            $http_response = Response::HTTP_RESET_CONTENT;
-            $status = false;
-        }
-
-        return response()->json(['message' => $messsage, 'status' => $status], $http_response);
+        return response()->json(['message' => $getResponseMessage['messsage'], 'status' => $getResponseMessage['status']], $getResponseMessage['http_response']);
 
     }
 
@@ -95,17 +85,9 @@ class OrderController extends Controller
     {
 
         $editOrderCheck = $editOrder->execute($request);
-//        return response()->json(['message' => $editOrderCheck]);
-        $messsage = "order is updated";
-        $http_response = Response::HTTP_CREATED;
-        $status = true;
-        if (!$editOrderCheck) {
-            $messsage = "your order count is out of product inventory range";
-            $http_response = Response::HTTP_RESET_CONTENT;
-            $status = false;
-        }
+        $getResponseMessage=$this->getResponseMessage($editOrderCheck,'updated');
 
-        return response()->json(['message' => $messsage, 'status' => $status], $http_response);
+        return response()->json(['message' => $getResponseMessage['messsage'], 'status' => $getResponseMessage['status']], $getResponseMessage['http_response']);
     }
 
     /**
@@ -122,5 +104,19 @@ class OrderController extends Controller
         $order->delete();
 
         return response()->json(['message' => 'your order deleted successfuly', 'status' => true], Response::HTTP_OK);
+    }
+
+    private function getResponseMessage($check,$subject)
+    {
+        $messsage = "order is $subject";
+        $http_response = Response::HTTP_CREATED;
+        $status = true;
+        if (!$check) {
+            $messsage = "your order count is out of product inventory range";
+            $http_response = Response::HTTP_RESET_CONTENT;
+            $status = false;
+        }
+
+        return ['message'=>$messsage,'http_response'=>$http_response,'status'=>$status];
     }
 }

@@ -20,14 +20,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('order_product', function (Blueprint $table) {
-
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('product_id');
-            $table->integer('count');
-
-
-        });
     }
 
     /**

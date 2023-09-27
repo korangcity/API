@@ -31,8 +31,6 @@ class EditOrder
         $updateEditedOrder->setOldCounts($oldCounts);
 
         $check = $checkProductInventory->execute();
-//        return $check;
-
         return $check == false ? false : true;
 
     }
